@@ -7,14 +7,12 @@ namespace Mike.Application.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CustomerController : ControllerBase
+    public class CustomerController : BaseApiController
     {
-        protected readonly ILogger<CustomerController> _logger;
         protected readonly ICustomerService _customerService;
         public CustomerController(ILogger<CustomerController> logger,
-                                  ICustomerService customerService)
+                                  ICustomerService customerService) : base(logger)
         {
-            _logger = logger;
             _customerService = customerService;
         }
 

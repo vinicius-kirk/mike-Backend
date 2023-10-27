@@ -10,6 +10,7 @@ using Mike.InfraEstructure.CrossCutting.Notifications;
 using Mike.InfraEstructure.Data.Context;
 using Mike.Interface.Mapper;
 using Microsoft.OpenApi.Models;
+using Mike.Application.Middlewares;
 
 namespace Mike
 {
@@ -29,15 +30,11 @@ namespace Mike
 
             services.AddControllers();
 
-            services.AddMvc(config => 
-            {
-                config.Filters.Add<NotificationFilter>();
-            });
-
             services.AddDbContext<MikeDBContext>(options =>
             {
                 options.UseSqlServer(connectionString);
             });
+
 
             AddAutoMapper(services);
 
@@ -68,10 +65,13 @@ namespace Mike
 
             app.UseAuthorization();
 
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
         }
 
         private void AddAutoMapper(IServiceCollection services)

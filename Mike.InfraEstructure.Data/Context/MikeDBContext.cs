@@ -1,26 +1,37 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Mike.Domain.Entities;
+using Mike.Domain.Models;
+using Mike.InfraEstructure.Data.Context.Configuration;
+using System.IO;
 
 namespace Mike.InfraEstructure.Data.Context
 {
     public class MikeDBContext : DbContext
     {
-        private readonly IConfiguration _configuration;
-        public MikeDBContext(IConfiguration configuration)
+        public MikeDBContext()
         {
-            _configuration = configuration;
         }
 
-        public DbSet<Customer> Customers { get; set; }
+        public MikeDBContext(DbContextOptions<MikeDBContext> options)
+       :base(options)
+        {
+        }
 
+        public DbSet<Product> Products { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer("Server=localhost,1433;Database=Mike;User ID=sa;Password=1q2w3e4r@#$;TrustServerCertificate=true;");
+            }
+        }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            // Adicione configurações de modelo separadas
-            //modelBuilder.ApplyConfiguration(new CustomerConfiguration());
-            // Adicione outras configurações de modelo separadas conforme necessário.
+            modelBuilder.ApplyConfiguration(new ProductConfiguration());
         }
     }
 }

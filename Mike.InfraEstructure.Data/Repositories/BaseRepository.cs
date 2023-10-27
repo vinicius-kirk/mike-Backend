@@ -3,37 +3,54 @@ using Mike.Domain.Repositories;
 using Mike.InfraEstructure.Data.Context;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Mike.InfraEstructure.Data.Repositories
 {
     public abstract class BaseRepository<T> : IRepository<T> where T : Entity
     {
-        protected readonly MikeDBContext DBContextData;
+        protected readonly MikeDBContext _dbContextData;
 
         public BaseRepository(MikeDBContext dbContextData)
         {
-            DBContextData = dbContextData;
+            _dbContextData = dbContextData;
         }
 
-        public Task<T> Edit(T entity)
+        public async Task<T> Put(T entity)
         {
-            throw new NotImplementedException();
+            _dbContextData.Update(entity);
+            await _dbContextData.SaveChangesAsync();
+            return entity;
         }
 
-        public Task<IEnumerable<T>> Find(Func<T, bool> func)
+        public async Task<IEnumerable<T>> GetAll(Func<T, bool> func)
         {
-            throw new NotImplementedException();
+            return await _dbContextData.Set<T>().Where(func).AsQueryable().ToListAsync();
         }
 
-        public Task<T> GetByID(Guid id)
+        public async Task<T> GetByID(Guid id)
         {
-            throw new NotImplementedException();
+            return await _dbContextData.Set<T>().FindAsync(id);
         }
 
-        public Task<T> Save(T entity)
+        public async Task<T> Add(T entity)
         {
-            throw new NotImplementedException();
+            _dbContextData.Add(entity);
+            await _dbContextData.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task Delete(Guid id)
+        {
+            var entity = await _dbContextData.Set<T>().FindAsync(id);
+            if (entity != null)
+            {
+                _dbContextData.Set<T>().Remove(entity);
+                await _dbContextData.SaveChangesAsync();
+            }
+
         }
     }
 }

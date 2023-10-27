@@ -29,7 +29,7 @@ namespace Mike.Service.Service
                 return null;
             }
 
-            _customerRepository.Edit(customer);
+            _customerRepository.Put(customer);
 
             return customerDTO;
         }
@@ -54,7 +54,7 @@ namespace Mike.Service.Service
                 return null;
             }
 
-            _customerRepository.Save(customer);
+            _customerRepository.Add(customer);
 
             return customerDTO;
         }
