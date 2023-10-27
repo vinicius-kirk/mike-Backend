@@ -9,9 +9,9 @@ namespace Mike.InfraEstructure.Data.Repositories
 {
     public abstract class BaseRepository<T> : IRepository<T> where T : Entity
     {
-        protected readonly DbContextData DBContextData;
+        protected readonly MikeDBContext DBContextData;
 
-        public BaseRepository(DbContextData dbContextData)
+        public BaseRepository(MikeDBContext dbContextData)
         {
             DBContextData = dbContextData;
         }

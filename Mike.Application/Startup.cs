@@ -1,10 +1,15 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Mike.InfraEstructure.CrossCutting.InversionOfControl;
 using Mike.InfraEstructure.CrossCutting.Notifications;
+using Mike.InfraEstructure.Data.Context;
+using Mike.Interface.Mapper;
+using Microsoft.OpenApi.Models;
 
 namespace Mike
 {
@@ -13,31 +18,48 @@ namespace Mike
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
         }
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            string connectionString = Configuration.GetConnectionString("mike");
+
             services.AddControllers();
 
-            services.AddMvc(config =>
+            services.AddMvc(config => 
             {
                 config.Filters.Add<NotificationFilter>();
             });
 
-            services.AddContext("");
+            services.AddDbContext<MikeDBContext>(options =>
+            {
+                options.UseSqlServer(connectionString);
+            });
+
+            AddAutoMapper(services);
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Mike API", Version = "v1" });
+            });
+
             services.AddRepository();
             services.AddServices();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mike Api");
+                });
             }
 
             app.UseHttpsRedirection();
@@ -50,6 +72,13 @@ namespace Mike
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private void AddAutoMapper(IServiceCollection services)
+        {
+            MapperConfiguration mappingConfig = AutoMapperConfig.RegisterMaps();
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
         }
     }
 }

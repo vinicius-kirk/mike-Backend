@@ -6,7 +6,7 @@ namespace Mike.InfraEstructure.Data.Repositories
 {
     public class CustomerRepository : BaseRepository<Customer>, ICustomerRepository
     {
-        public CustomerRepository(DbContextData dbContextData) : base(dbContextData)
+        public CustomerRepository(MikeDBContext dbContextData) : base(dbContextData)
         {
         }
     }
