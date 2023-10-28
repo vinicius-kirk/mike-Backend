@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mike.InfraEstructure.Data.Context;
 
@@ -11,9 +12,11 @@ using Mike.InfraEstructure.Data.Context;
 namespace Mike.InfraEstructure.Data.Migrations
 {
     [DbContext(typeof(MikeDBContext))]
-    partial class MikeDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231028010514_AlterandoModelsProduto")]
+    partial class AlterandoModelsProduto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

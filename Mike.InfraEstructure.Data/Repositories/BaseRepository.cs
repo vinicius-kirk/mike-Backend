@@ -30,7 +30,7 @@ namespace Mike.InfraEstructure.Data.Repositories
             return await _dbContextData.Set<T>().Where(func).AsQueryable().ToListAsync();
         }
 
-        public async Task<T> GetByID(Guid id)
+        public async Task<T> GetByID(int id)
         {
             return await _dbContextData.Set<T>().FindAsync(id);
         }
@@ -42,7 +42,7 @@ namespace Mike.InfraEstructure.Data.Repositories
             return entity;
         }
 
-        public async Task Delete(Guid id)
+        public async Task Delete(int id)
         {
             var entity = await _dbContextData.Set<T>().FindAsync(id);
             if (entity != null)

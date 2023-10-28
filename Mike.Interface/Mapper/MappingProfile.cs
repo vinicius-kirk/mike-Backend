@@ -31,7 +31,7 @@ namespace Mike.Interface.Mapper
             CreateMap<CustomerDTO, Customer>()
                 .ForMember(
                     dest => dest.ID,
-                    opt => opt.MapFrom(src => Guid.Parse(src.ID))
+                    opt => opt.MapFrom(src => int.Parse(src.ID))
                 )
                 .ForMember(
                     dest => dest.Name,

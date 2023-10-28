@@ -14,7 +14,7 @@ namespace Mike.InfraEstructure.Data.Context
         }
 
         public MikeDBContext(DbContextOptions<MikeDBContext> options)
-       :base(options)
+        :base(options)
         {
         }
 
@@ -24,7 +24,7 @@ namespace Mike.InfraEstructure.Data.Context
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=localhost,1433;Database=Mike;User ID=sa;Password=1q2w3e4r@#$;TrustServerCertificate=true;");
+                optionsBuilder.UseSqlServer("Server=localhost,1433;Database=Mike;User ID=sa;Password=Tac@Pik4;TrustServerCertificate=true;");
             }
         }
         
@@ -32,6 +32,9 @@ namespace Mike.InfraEstructure.Data.Context
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new SubcategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new DiscountConfiguration());
         }
     }
 }

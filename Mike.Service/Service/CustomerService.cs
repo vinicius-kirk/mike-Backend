@@ -36,7 +36,7 @@ namespace Mike.Service.Service
 
         public CustomerDTO GetCustomerByID(string ID)
         {
-            var guid = Guid.Parse(ID);
+            var guid = int.Parse(ID);
 
             var customer = _customerRepository.GetByID(guid);
 

@@ -8,7 +8,7 @@ namespace Mike.Domain.Models
 {
     public class AuditableModel
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public DateTime CreatedAt { get; set; }
         public string CreatedBy { get; set; }
         public DateTime? LastModifiedAt { get; set; }
